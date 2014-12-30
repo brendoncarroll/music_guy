@@ -1,0 +1,21 @@
+body {
+    font-family: "Helvetica", "Arial";
+}
+
+#song-window {
+    border: 1px solid black;
+    width:1000px;
+    height:500px;
+    float:center;
+    overflow:scroll;
+}
+
+#player {
+    border: 1px solid black;
+    width:1200px;
+    height:75px;
+}
+
+#search {
+
+}

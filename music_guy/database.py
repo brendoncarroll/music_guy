@@ -1,18 +1,41 @@
 #!/usr/bin/env python3
 
+import collections
 import sqlite3
 import os
 import time
 import threading
 import logging
 
-CREATE_TABLE = "".join(open('setupdb.sql', 'r').readlines())
-GET_MODIFIED = """SELECT modified_time FROM songs WHERE filepath = ?"""
-ADD_SONG = """INSERT OR REPLACE INTO songs
-              (filepath, modified_time)
-              VALUES (?,?)"""
-SWAP_FILEPATH = """UPDATE songs SET filepath=? WHERE filepath=?"""
-SEARCH = r"""SELECT * FROM songs WHERE lower(songs.filepath) LIKE lower(?)"""
+import music_guy.media
+
+CREATE_TABLE = "".join(open('music_guy/setupdb.sql', 'r').readlines())
+GET_MODIFIED = """SELECT
+                    modified_time
+                  FROM
+                    songs
+                  WHERE
+                    filepath = ?"""
+ADD_SONG = """INSERT OR REPLACE INTO
+                songs
+                (filepath, modified_time, albumartist, album, artist, title)
+              VALUES
+                (?,?,?,?,?,?)"""
+SWAP_FILEPATH = """UPDATE 
+                        songs 
+                   SET
+                        filepath=?
+                   WHERE
+                        filepath=?"""
+SEARCH = """SELECT
+                *
+            FROM
+                songs
+            WHERE
+            upper(songs.albumartist) LIKE upper(?) OR
+            upper(songs.album) LIKE upper(?) OR
+            upper(songs.artist) LIKE upper(?) OR
+            upper(songs.title) LIKE upper(?)"""
 
 logger = logging.getLogger(__name__)
 
@@ -22,17 +45,13 @@ class Database(object):
     def __init__(self, dbpath):
         self.connections = {}
         self.dbpath = dbpath
-        conn = sqlite3.connect(self.dbpath)
-        c = conn.cursor()
-        c.executescript(CREATE_TABLE)
-        conn.commit()
+        self.execute(CREATE_TABLE, commit=True)
         logger.debug('Database ready.')
 
     def add(self, filepath):
-        conn = self.get_connection()
-        c = conn.cursor()
-        c.execute(ADD_SONG, (filepath, os.stat(filepath).st_mtime))
-        conn.commit()
+        song = media.make_song(filepath)
+        print(song)
+        self.execute(ADD_SONG, song, commit=True)
         logger.debug('Update: %s' % filepath)
 
     def check(self, filepath):
@@ -81,12 +100,41 @@ class Database(object):
         c.execute(SWAP_FILEPATH, (filepath_dest, filepath_src))
         conn.commit()
 
-    def search(self, term, limit=50):
+    def search(self, query, limit=10):
+        """This could probably be simplified, or moved into SQL.  It searches
+        to see if each word in `query` is in any of the columns and returns
+        that column.  It counts the amount of times a column is returned and
+        then returns the columns sorted by the number of times they appear.
+        """
         conn = self.get_connection()
         c = conn.cursor()
-        term = '%' + term + '%'
-        c.execute(SEARCH, (term,))
-        rows = c.fetchmany(limit)
+        terms = query.split()
+        rows = collections.Counter()
+        for term in terms:
+            term = '%' + term + '%'
+            c.execute(SEARCH, (term, term, term, term))
+            rows.update(c.fetchmany())
+        for row in rows.most_common(limit):
+            song = media.Song(*row[0])
+            print(song.artist, '-', song.title)
+
+    def get_all(self):
+        c = self.execute("SELECT * FROM songs")
+        rows = c.fetchall()
+        songs = []
         for row in rows:
-            print(row)
+            songs.append(Song(row))
+        return songs
+
+    def execute(self, query, param=tuple(), commit=False):
+        """Creates a cursor, runs its execute method, commits if necessary,
+        and returns the cursor.
+        """
+        conn = self.get_connection()
+        c = conn.cursor()
+        c.execute(query, param)
+        if commit:
+            conn.commit()
+        return c
+
 

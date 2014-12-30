@@ -7,8 +7,7 @@ import re
 
 from watchdog.events import PatternMatchingEventHandler, FileMovedEvent
 from watchdog.observers import Observer
-
-from config import config, SUPPORTED_FILETYPES
+from music_guy import config, SUPPORTED_FILETYPES
 
 logger = logging.getLogger(__name__)
 
