@@ -7,7 +7,7 @@ import time
 import threading
 import logging
 
-import music_guy.media
+import music_guy.media as media
 
 CREATE_TABLE = "".join(open('music_guy/setupdb.sql', 'r').readlines())
 GET_MODIFIED = """SELECT
@@ -123,7 +123,7 @@ class Database(object):
         rows = c.fetchall()
         songs = []
         for row in rows:
-            songs.append(Song(row))
+            songs.append(media.Song(row))
         return songs
 
     def execute(self, query, param=tuple(), commit=False):
