@@ -10,32 +10,39 @@ import logging
 import music_guy.media as media
 
 CREATE_TABLE = "".join(open('music_guy/setupdb.sql', 'r').readlines())
-GET_MODIFIED = """SELECT
-                    modified_time
-                  FROM
-                    songs
-                  WHERE
-                    filepath = ?"""
-ADD_SONG = """INSERT OR REPLACE INTO
-                songs
-                (filepath, modified_time, albumartist, album, artist, title)
-              VALUES
-                (?,?,?,?,?,?)"""
-SWAP_FILEPATH = """UPDATE 
-                        songs 
-                   SET
-                        filepath=?
-                   WHERE
-                        filepath=?"""
-SEARCH = """SELECT
-                *
-            FROM
-                songs
-            WHERE
-            upper(songs.albumartist) LIKE upper(?) OR
-            upper(songs.album) LIKE upper(?) OR
-            upper(songs.artist) LIKE upper(?) OR
-            upper(songs.title) LIKE upper(?)"""
+GET_MODIFIED = """
+SELECT
+    modified_time
+FROM
+    songs
+WHERE
+    filepath = ?"""
+
+ADD_SONG = """
+INSERT OR REPLACE INTO
+    songs
+    (filepath, modified_time, albumartist, album, artist, title)
+VALUES
+    (?,?,?,?,?,?)"""
+
+SWAP_FILEPATH = """
+UPDATE 
+    songs 
+SET
+    filepath=?
+WHERE
+    filepath=?"""
+
+SEARCH = """
+SELECT
+    *
+FROM
+    songs
+WHERE
+    upper(songs.albumartist) LIKE upper(?) OR
+    upper(songs.album) LIKE upper(?) OR
+    upper(songs.artist) LIKE upper(?) OR
+    upper(songs.title) LIKE upper(?)"""
 
 logger = logging.getLogger(__name__)
 
@@ -100,7 +107,7 @@ class Database(object):
         c.execute(SWAP_FILEPATH, (filepath_dest, filepath_src))
         conn.commit()
 
-    def search(self, query, limit=10):
+    def search(self, query, limit=20):
         """This could probably be simplified, or moved into SQL.  It searches
         to see if each word in `query` is in any of the columns and returns
         that column.  It counts the amount of times a column is returned and
@@ -114,9 +121,11 @@ class Database(object):
             term = '%' + term + '%'
             c.execute(SEARCH, (term, term, term, term))
             rows.update(c.fetchmany())
+        songs = []
         for row in rows.most_common(limit):
-            song = media.Song(*row[0])
-            print(song.artist, '-', song.title)
+            song = media.Song(*row[0])._asdict()
+            songs.append(song)
+        return songs
 
     def get_all(self, limit=100):
         c = self.execute("SELECT * FROM songs")

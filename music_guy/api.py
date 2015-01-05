@@ -1,11 +1,12 @@
 import json
 
-from bottle import get, post
+from bottle import get, post, request
 from music_guy import db
 
 @get('/library')
 def library():
-    pass
+    return {'numSongs' : 0,
+            'numArtists' : 0}
 
 @get('/library/artists')
 def artists():
@@ -21,4 +22,10 @@ def songs():
 @get('/library/songs/<songid>')
 def get_song(song_id):
     pass
-    
+
+@get('/library/search')
+def search():
+    query = request.query['q']
+    data = {}
+    data['results'] = db.search(query)
+    return data
