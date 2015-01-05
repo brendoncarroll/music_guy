@@ -118,12 +118,13 @@ class Database(object):
             song = media.Song(*row[0])
             print(song.artist, '-', song.title)
 
-    def get_all(self):
+    def get_all(self, limit=100):
         c = self.execute("SELECT * FROM songs")
-        rows = c.fetchall()
+        rows = c.fetchmany(limit)
         songs = []
         for row in rows:
-            songs.append(media.Song(row))
+            song = media.Song(*row)._asdict()
+            songs.append(song)
         return songs
 
     def execute(self, query, param=tuple(), commit=False):
