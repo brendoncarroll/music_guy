@@ -4,10 +4,10 @@ from bottle import get, static_file, response
 from pystache import Renderer
 
 from music_guy.coffeemaker import Environment
-from music_guy.api import *
+import music_guy.api
 
 d = dirname(__file__)
-renderer = Renderer(search_dirs=[join(d, 'templates/')])
+renderer = Renderer(search_dirs=[join(d, 'web/templates')])
 env = Environment([join(d, 'web/scripts')])
 
 @get('/js/<filepath:path>')
