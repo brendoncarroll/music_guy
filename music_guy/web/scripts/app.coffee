@@ -23,20 +23,20 @@ $(document).ready ->
     clearSongs()
     addSong song for song in songs
 
-  $('#searchbox').keypress (e) ->
-    if e.which is 13
-      $.ajax
-        type: 'GET'
-        data:
-          q: 'c'
-        url: '/library/search'
-        success: (data) ->
-          updateSongs data.results
-          return
-        error: ->
-          alert: 'search error'
-          return
-    false
+  $('#searchbox').keydown (e) ->
+    if e.keyCode is 13
+      e.preventDefault()
+    $.ajax
+      type: 'GET'
+      data:
+        q: $('#searchbox').val()
+      url: '/library/search'
+      success: (data) ->
+        updateSongs data.results
+        return
+      error: ->
+        alert: 'search error'
+        return
 
   $.ajax
     type: "GET"

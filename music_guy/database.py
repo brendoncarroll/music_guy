@@ -120,7 +120,7 @@ class Database(object):
         for term in terms:
             term = '%' + term + '%'
             c.execute(SEARCH, (term, term, term, term))
-            rows.update(c.fetchmany())
+            rows.update(c.fetchall())
         songs = []
         for row in rows.most_common(limit):
             song = media.Song(*row[0])._asdict()
