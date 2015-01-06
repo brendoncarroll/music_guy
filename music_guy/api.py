@@ -19,9 +19,9 @@ def songs():
     data['songs'] = db.get_all()
     return data
 
-@get('/library/songs/<songid>')
-def get_song(song_id):
-    pass
+@get('/library/songs/<songid:int>')
+def get_song(songid):
+    return db.get_song(songid)._asdict()
 
 @get('/library/search')
 def search():

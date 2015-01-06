@@ -52,12 +52,14 @@ class Database(object):
     def __init__(self, dbpath):
         self.connections = {}
         self.dbpath = dbpath
-        self.execute(CREATE_TABLE, commit=True)
+        conn = self.get_connection()
+        c = conn.cursor()
+        conn.executescript(CREATE_TABLE)
+        conn.commit()
         logger.debug('Database ready.')
 
     def add(self, filepath):
-        song = media.make_song(filepath)
-        print(song)
+        song = media.song2row(media.make_song(filepath))
         self.execute(ADD_SONG, song, commit=True)
         logger.debug('Update: %s' % filepath)
 
@@ -86,7 +88,7 @@ class Database(object):
         except KeyError:
             logger.debug('New connection created for %s', thread)
             self.connections[thread] = sqlite3.connect(self.dbpath)
-        return self.connections[thread]
+            return self.connections[thread]
 
     def done(self):
         """If there is a connection for your thread and you call it, this
@@ -147,4 +149,8 @@ class Database(object):
             conn.commit()
         return c
 
+    def get_song(self, songID):
+        c = self.execute("SELECT * FROM songs WHERE songs.id == ?", (songID,))
+        rows = c.fetchall()
+        return media.Song(*rows[0])
 
