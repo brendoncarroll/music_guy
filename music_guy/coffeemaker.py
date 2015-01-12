@@ -13,12 +13,13 @@ class Environment(object):
         self.directories = directories
 
     def get(self, logical_path):
-        name = xlate_ext(logical_path)
-        for directory in self.directories:
-            path = os.path.join(directory, name)
-            if os.path.exists(path):
-                job = Job(path)
-                return job.run()
+        for ext in EXTENSIONS:
+            name = use_ext(logical_path, ext)
+            for directory in self.directories:
+                path = os.path.join(directory, name)
+                if os.path.exists(path):
+                    job = Job(path)
+                    return job.run()
 
 class Job(object):
 
@@ -67,11 +68,11 @@ class Job(object):
                     self.require(os.path.join(root, f))
 
 
-def xlate_ext(filename):
+def use_ext(filename, ext):
     """Translates xyz.js to xyz.coffee
     """
     name = os.path.splitext(filename)[0]
-    return name + '.coffee'
+    return name + ext
 
 def read(filename):
     with open(filename, 'r') as f:
