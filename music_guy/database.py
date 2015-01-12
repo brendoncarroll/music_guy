@@ -191,10 +191,11 @@ class Database(object):
         for term in terms:
             term = '%' + term + '%'
             c.execute(SEARCH, (term, term, term, term))
-            rows.update(c.fetchall())
+            for row in c.fetchall():
+                rows[tuple(row.items())] += 1
         songs = []
-        for row in rows.most_common(limit):
-            song = media.Song(*row[0])._asdict()
+        for row, n in rows.most_common(limit):
+            song = dict(row)
             songs.append(song)
         return songs
 
