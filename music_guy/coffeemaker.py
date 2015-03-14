@@ -76,7 +76,7 @@ def use_ext(filename, ext):
 
 def read(filename):
     with open(filename, 'r') as f:
-        return "".join(f.readlines())
+        return f.read()
 
 
 if __name__ == '__main__':

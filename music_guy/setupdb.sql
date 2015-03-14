@@ -1,6 +1,6 @@
 -- Clear db for dev purposes
-DROP TABLE IF EXISTS songs;
-DROP TABLE IF EXISTS artists;
+--DROP TABLE IF EXISTS songs;
+--DROP TABLE IF EXISTS artists;
 
 
 -- Sets up the songs table

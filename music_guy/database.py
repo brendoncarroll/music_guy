@@ -184,6 +184,8 @@ class Database(object):
         that column.  It counts the amount of times a column is returned and
         then returns the columns sorted by the number of times they appear.
         """
+        if query == "":
+            return self.get_all()
         conn = self.get_connection()
         c = conn.cursor()
         terms = query.split()
@@ -199,8 +201,10 @@ class Database(object):
             songs.append(song)
         return songs
 
-    def get_all(self, limit=100):
+    def get_all(self, limit=20):
         results = self.execute(('SELECT * FROM songs',))
+        if len(results) > limit:
+            return results[:limit]
         return results
 
     def execute(self, query, commit=False):

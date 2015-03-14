@@ -1,12 +1,15 @@
 import json
 
-from bottle import get, post, request
+from bottle import get, post, request, static_file
 from music_guy import db
 
 @get('/library')
 def library():
-    return {'numSongs' : 0,
-            'numArtists' : 0}
+    return db.stats()
+
+@get ('/library/albums')
+def albums():
+    pass
 
 @get('/library/artists')
 def artists():
@@ -25,7 +28,21 @@ def get_song(songid):
 
 @get('/library/search')
 def search():
-    query = request.query['q']
+    try:
+        query = request.query['q']
+    except:
+        return
     data = {}
-    data['results'] = db.search(query)
+    data['songs'] = db.search(query)
     return data
+
+@get('/queues/<queueid:int>')
+def queues(queueid):
+    data = {}
+    data[queue] = list()
+    return data
+
+@get('/play/<songid:int>')
+def play(songid):
+    song = db.get_song(songid)
+    return static_file(song['filepath'], root='/')
