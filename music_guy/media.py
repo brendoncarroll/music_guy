@@ -5,13 +5,6 @@ import os
 
 import mutagen
 
-# This makes a class which extends the built in `tuple` class.  It is useful
-# for putting stuff SQL queries.
-# The most obvious problem with this is that it will become out of sync with
-# order of fields in the SQL query string.
-
-import os
-
 class Song(object):
 
     def __init__(self, filepath):

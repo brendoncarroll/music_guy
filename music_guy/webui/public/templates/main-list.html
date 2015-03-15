@@ -1,0 +1,28 @@
+<div id="search" class="">
+    <form>
+      <input type ="text" class="form-control" ng-model="query" placeholder="Your search query here.">
+    </form>
+</div>
+
+<div id="list" class="container">
+  <div id="song-table">
+  <table class="table">
+      <tr>
+        <th>Artist</th>
+        <th>Album</th>
+        <th>Title</th>
+        <th>Length</th>
+      </tr>
+      <tr ng-repeat="song in songs" ng-dblclick="changeSong(song.songID)">
+        <td>{{ song.artist }}</td>
+        <td>{{ song.album }}</td>
+        <td>{{ song.title }}</td>
+        <td>{{ song.length}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div id="player" class="">
+  Player is here.
+</div>

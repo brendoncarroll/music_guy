@@ -36,7 +36,7 @@ def search():
     data['songs'] = db.search(query)
     return data
 
-@get('/queues/<queueid:int>')
+@get('library/queues/<queueid:int>')
 def queues(queueid):
     data = {}
     data[queue] = list()
