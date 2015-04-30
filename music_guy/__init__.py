@@ -26,6 +26,7 @@ logging.basicConfig(format='%(levelname)s:%(name)s: %(message)s',
 
 from music_guy.database import Database
 from music_guy.filemonitor import FileMonitor
+#l = Library(db_filepath=DATABASE_FILEPATH)
 db = Database(DATABASE_FILEPATH)
 fm = FileMonitor(config['RootFolder'], db)
 

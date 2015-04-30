@@ -1,13 +1,11 @@
 var app = angular.module('app', [
     'ngRoute',
-    'appControllers'
+    'Main'
 ]);
 
 app.config(function($routeProvider) {
         $routeProvider.when('/', {
-            templateUrl: '/templates/main-list.html',
-            controller: 'ListCtrl'
-        }).otherwise({
-            redirectTo: '/'
+            templateUrl: '/templates/main.html',
+            controller: 'MainCtrl'
         });
 });

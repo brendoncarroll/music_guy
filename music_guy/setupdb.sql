@@ -4,21 +4,24 @@
 
 
 -- Sets up the songs table
-CREATE TABLE IF NOT EXISTS songs
-(songID INTEGER PRIMARY KEY,
-filepath TEXT NOT NULL,
-modified_time REAL,
-albumartist TEXT,
-album TEXT,
-artist TEXT,
-title TEXT,
-genre TEXT,
-UNIQUE (filepath));
+CREATE TABLE IF NOT EXISTS songs (
+	songID INTEGER PRIMARY KEY,
+	filepath TEXT NOT NULL,
+	mtime REAL,
+	UNIQUE (filepath)
+);
 
+CREATE TABLE IF NOT EXISTS titles (
+	songID INTEGER REFERENCES songs(songID)
+);
 
 --Sets up the artists table
-CREATE TABLE IF NOT EXISTS artists
-(artistID INTEGER PRIMARY KEY,
-name TEXT NOT NULL,
-total_songs INTEGER DEFAULT 0,
-UNIQUE (name));
+CREATE TABLE IF NOT EXISTS artists (
+	songID INTEGER REFERENCES songs(songID)
+	artist TEXT,
+);
+
+CREATE TABLE IF NOT EXISTS genres(
+	songID INTEGER REFERENCES songs(songID),
+	genre TEXT
+);

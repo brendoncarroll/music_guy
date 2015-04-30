@@ -1,0 +1,50 @@
+<div id="search" class="container">
+    <form>
+      <input type ="text" class="form-control" ng-model="query" placeholder="Your search query here.">
+    </form>
+</div>
+
+<div id="list" class="container">
+  <span>Now showing results for: {{ query }}</span>
+  <div id="song-table">
+    <table class="table">
+        <tr>
+          <th>Artist</th>
+          <th>Album</th>
+          <th>Title</th>
+          <th>Length</th>
+        </tr>
+        <tr ng-repeat="song in songs" ng-dblclick="changeSong(song)">
+          <td>{{ song.artist }}</td>
+          <td>{{ song.album }}</td>
+          <td>{{ song.title }}</td>
+          <td>{{ song.length }}</td>
+        </tr>
+      </table>
+    </div>
+</div>
+
+<div id="player" class="container">
+    <div class="row" ng-show="currentSong">
+        <span>Now Playing {{currentSong.title}} by {{currentSong.artist}}</span>
+    </div>
+    <div class="btn-group btn-group">
+        <button class="btn btn-default btn-lg"
+            ng-click="">
+            <span class="glyphicon glyphicon-step-backward"></span>
+        </button>
+        <button class="btn btn-default btn-lg"
+            ng-hide="isPlaying()"
+            ng-click="play()">
+            <span class="glyphicon glyphicon-play"></span>
+        </button>
+        <button class="btn btn-default btn-lg"
+            ng-hide="!isPlaying()"
+            ng-click="pause()">
+            <span class="glyphicon glyphicon-pause"></span>
+        </button>
+        <button class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-step-forward"></span>
+        </button>
+    </div>
+</div>
