@@ -9,6 +9,7 @@ function FileMonitor(db, dirpath) {
         db: db,
         dirpath: dirpath,
     };
+    console.log('Now Monitoring ', dirpath);
 
     that.mediafiles = that.db.collection("mediafiles");
     that.watcher = chokidar.watch(that.dirpath, {

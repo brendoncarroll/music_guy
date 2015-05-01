@@ -18,14 +18,20 @@ SUPPORTED_FILETYPES = {
 CONFIG = config('./config.json');
 
 function MusicGuy() {
-    var that = {};
+    var that = {
+        port: 3000
+    };
+    console.log('Starting Music Guy...');
 
     that.webapp = express();
     that.server = http.createServer(that.webapp);
-    that.server.listen(3000);
-
-    that.renamer = Renamer(CONFIG.nameTemplate);
     that.webui = WebUI(that.webapp);
+    that.server.listen(that.port);
+    console.log('Listening on port', that.port,'...');
+
+    if (CONFIG.enableRenamer) {
+        that.renamer = Renamer(CONFIG.nameTemplate);
+    }
 
     Db(function (db) {
         that.db = db;

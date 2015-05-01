@@ -4,7 +4,6 @@ var fs = require('fs-extra');
 
 function Renamer(templateString) {
     if (!templateString) throw 'templateString invalid';
-
     var that = {
         templateString: templateString,
         replacements: {
@@ -12,6 +11,7 @@ function Renamer(templateString) {
             '/': '-'
         }
     };
+    console.log('Renamer using', templateString);
 
     that.sanitize = function (string) {
         Object.keys(that.replacements).forEach(function (badChar) {
@@ -68,9 +68,3 @@ function Renamer(templateString) {
 
 
 module.exports = Renamer;
-
-function main() {
-    rn = Renamer('%albumartist%/%album%/%title%');
-    var filepath = '/home/brendon/Music/Taylor Swift/Speak Now/Taylor Swift - Mean.flac';
-    rn.handleAdd(filepath, {}, {artist: title});
-}
