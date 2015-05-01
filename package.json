@@ -1,0 +1,14 @@
+{
+  "name": "music_node",
+  "private": true,
+  "description": "",
+  "main": "music_guy.js",
+  "author": "Brendon Carroll",
+  "packages": {
+      "chokidar": "",
+      "tingodb": "",
+      "mkdirp" : "",
+      "mongodb": "",
+      "musicmetadata": ""
+  }
+}
