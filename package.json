@@ -7,7 +7,7 @@
   "dependencies": {
     "chokidar": "*",
     "express": "^4.12.3",
-    "mkdirp": "*",
+    "fs-extra": "^0.18.2",
     "mongodb": "*",
     "musicmetadata": "*",
     "tingodb": "*"

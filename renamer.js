@@ -1,9 +1,10 @@
 
 var path = require('path');
-var fs = require('fs');
-var mkdirp = require('mkdirp');
+var fs = require('fs-extra');
 
 function Renamer(templateString) {
+    if (!templateString) throw 'templateString invalid';
+
     var that = {
         templateString: templateString,
         replacements: {
@@ -50,24 +51,12 @@ function Renamer(templateString) {
     that.handleAdd = function (mediafile) {
         var newFilepath = that.newFilepath(mediafile);
         if (newFilepath !== mediafile.path) {
-            fs.exist(newFilepath, function (exists) {
-                if (exists) {
-                    console.log('Could not rename ', mediafile.path);
-                    return;
-                }
-                console.log('Renaming', mediafile.path, ' to ', newFilepath);
-                mkdirp(path.dirname(newFilepath), function (err) {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                    fs.rename(mediafile.path, newFilepath, function (err) {
-                        if (err) {
-                            console.error(err);
-                            return;
-                        }
-                    });
-                });
+            console.log('Renaming', mediafile.path, ' to ', newFilepath);
+            fs.move(mediafile.path,
+                newFilepath,
+                {clobber: false},
+                function (err) {
+                    //if (err) throw err;
             });
         }
     };
