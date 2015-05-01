@@ -16,6 +16,7 @@ function Db(callback) {
             artist: 1,
             genre: 1,
             albumartist: 1,
+            album: 1,
         });
         callback(db);
     });

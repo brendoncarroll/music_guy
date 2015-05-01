@@ -36,7 +36,7 @@ module.exports = function RestAPI(db, app) {
         that.mediafiles.find({
             $or: [{title: regex(query)},
                 {artist: regex(query)},
-                {genre: regex(query)}]
+                {album: regex(query)}]
         }, {
             title: 1,
             artist: 1,
