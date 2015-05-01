@@ -1,6 +1,6 @@
 
 var express = require('express');
-var ObjectID = require('mongodb').ObjectID;
+var ObjectID = require('./db.js').ObjectID;
 
 module.exports = function RestAPI(db, app) {
     var that = {

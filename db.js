@@ -1,5 +1,6 @@
 
 var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 
 function Db(callback) {
     MongoClient.connect('mongodb://localhost/music_guy', function (err, db) {
@@ -24,4 +25,5 @@ function Db(callback) {
 
 module.exports = {
     Db: Db,
+    ObjectID: ObjectID,
 };
