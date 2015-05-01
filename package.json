@@ -1,14 +1,15 @@
 {
-  "name": "music_node",
+  "name": "music_guy",
   "private": true,
-  "description": "",
+  "description": "A music organizer and streamer.",
   "main": "music_guy.js",
   "author": "Brendon Carroll",
-  "packages": {
-      "chokidar": "",
-      "tingodb": "",
-      "mkdirp" : "",
-      "mongodb": "",
-      "musicmetadata": ""
+  "dependencies": {
+    "chokidar": "*",
+    "express": "^4.12.3",
+    "mkdirp": "*",
+    "mongodb": "*",
+    "musicmetadata": "*",
+    "tingodb": "*"
   }
 }
