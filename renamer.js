@@ -8,15 +8,16 @@ function Renamer(templateString) {
         templateString: templateString,
         replacements: {
             ':': '-',
+            '/': '-'
         }
     };
 
-    that.fixFilepath = function (filepath) {
+    that.sanitize = function (string) {
         Object.keys(that.replacements).forEach(function (badChar) {
             var goodChar = that.replacements[badChar];
-            filepath = filepath.replace(badChar, goodChar);
+            string = string.replace(badChar, goodChar);
         });
-        return filepath;
+        return string;
     };
 
     that.newFilepath = function (mediafile) {
@@ -36,6 +37,9 @@ function Renamer(templateString) {
                 if (attr.constructor === Array) {
                     attr = attr[0];
                 }
+                if (attr !== undefined) {
+                    attr = that.sanitize(attr);
+                }
             }
             newFilepath = newFilepath.replace(match[0], attr);
         });
@@ -45,12 +49,24 @@ function Renamer(templateString) {
 
     that.handleAdd = function (mediafile) {
         var newFilepath = that.newFilepath(mediafile);
-        newFilepath = that.fixFilepath(newFilepath);
         if (newFilepath !== mediafile.path) {
-            console.log('Renaming', mediafile.path, ' to ', newFilepath);
-            mkdirp(path.dirname(newFilepath), function (err) {
-                if (err) { return; }
-                fs.rename(mediafile.path, newFilepath, function (err) {
+            fs.exist(newFilepath, function (exists) {
+                if (exists) {
+                    console.log('Could not rename ', mediafile.path);
+                    return;
+                }
+                console.log('Renaming', mediafile.path, ' to ', newFilepath);
+                mkdirp(path.dirname(newFilepath), function (err) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                    fs.rename(mediafile.path, newFilepath, function (err) {
+                        if (err) {
+                            console.error(err);
+                            return;
+                        }
+                    });
                 });
             });
         }

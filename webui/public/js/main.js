@@ -21,7 +21,7 @@ main.controller('MainCtrl', function($scope, $http) {
 
     $scope.changeSong = function(song) {
         $scope.currentSong = song;
-        $scope.player = AV.Player.fromURL('/play/' + song.songID);
+        $scope.player = AV.Player.fromURL('/play/' + song['_id']);
         $scope.player.preload();
         $scope.player.play();
         console.log($scope.player);
