@@ -14,7 +14,7 @@ function FileMonitor(db, dirpath) {
     that.mediafiles = that.db.collection("mediafiles");
     that.watcher = chokidar.watch(that.dirpath, {
         alwaysStat: true,
-        ignored: /\/music.db\/.*/,
+        ignored: /\/_music_guy\/.*|(.*\/iTunes\/.*)/,
         persistent: false,
     });
 
@@ -25,7 +25,9 @@ function FileMonitor(db, dirpath) {
             mediafile.path = filepath;
             that.mediafiles.update({
                 path: filepath
-            }, mediafile);
+            }, mediafile, function (err) {
+                if (err) throw err;
+            });
             process.emit('mediaFileUpdate', mediafile);
         });
     };
@@ -36,8 +38,10 @@ function FileMonitor(db, dirpath) {
             delete mediafile.picture;
             mediafile.mtime = stats.mtime;
             mediafile.path = filepath;
-            that.mediafiles.insert(mediafile);
-            process.emit('mediaFileAdd', mediafile);
+            that.mediafiles.insert(mediafile, function (err) {
+                if (err) throw err;
+                process.emit('mediaFileAdd', mediafile);
+            });
         });
     };
 

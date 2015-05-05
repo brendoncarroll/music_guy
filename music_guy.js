@@ -3,19 +3,20 @@ var http = require('http');
 
 var express = require('express');
 
+var config = require('./config.js');
+CONFIG = config('./config.json');
+
 var FileMonitor = require('./filemonitor.js');
 var Renamer = require('./renamer.js');
-var config = require('./config.js');
 var WebUI = require('./webui');
 var Db = require('./db.js').Db;
 var RestAPI = require('./restapi.js');
+var SubsonicAPI = require('./subsonic.js');
 
 SUPPORTED_FILETYPES = {
     '.flac': true,
     '.mp3': true,
 };
-
-CONFIG = config('./config.json');
 
 function MusicGuy() {
     var that = {
@@ -39,6 +40,7 @@ function MusicGuy() {
         that.fm = FileMonitor(that.db, CONFIG.musicFolder);
 
         that.restapi = RestAPI(db, that.webapp);
+        that.subsonicapi = SubsonicAPI(db);
     });
 
     return that;

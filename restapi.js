@@ -41,6 +41,7 @@ module.exports = function RestAPI(db, app) {
             title: 1,
             artist: 1,
             album: 1,
+            genre: 1,
         }).limit(20).toArray(function (err, docs) {
             if (err) {
                 console.error(err);
@@ -65,4 +66,4 @@ module.exports = function RestAPI(db, app) {
     });
 
     return that;
-}
+};

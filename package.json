@@ -10,7 +10,6 @@
     "fs-extra": "^0.18.2",
     "mongodb": "*",
     "musicmetadata": "*",
-    "nedb": "^1.1.2",
-    "tingodb": "*"
+    "tingodb": "^0.3.4"
   }
 }
