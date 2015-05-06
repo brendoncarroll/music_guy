@@ -9,6 +9,9 @@ function FileMonitor(db, dirpath) {
         db: db,
         dirpath: dirpath,
     };
+    if (!fs.statSync(dirpath).isDirectory()) {
+        throw "Error: " + dirpath + " is not a directory.";
+    }
     console.log('Now Monitoring ', dirpath);
 
     that.mediafiles = that.db.collection("mediafiles");
@@ -74,10 +77,15 @@ function FileMonitor(db, dirpath) {
         that.mediafiles.remove({path: filepath});
     };
 
+    that.handleError = function (error) {
+        console.error(error);
+    };
+
     that.watcher
         .on('add', that.handleAdd)
         .on('change', that.handleChange)
-        .on('unlink', that.handleUnlink);
+        .on('unlink', that.handleUnlink)
+        .on('error', that.handleError);
 
     return path;
 }
