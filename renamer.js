@@ -41,6 +41,8 @@ function Renamer(templateString) {
                 if (attr !== undefined) {
                     attr = that.sanitize(attr);
                 }
+            } else {
+                return mediafile.path;
             }
             newFilepath = newFilepath.replace(match[0], attr);
         });
