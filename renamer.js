@@ -51,7 +51,7 @@ function Renamer(templateString) {
             match = that.matches[i];
             var tag = that.processTag(mediafile[match[1]]);
             if (tag) {
-                newFilepath = newFilepath.replace(match[0], tag);
+                newFilepath = newFilepath.replace(match[0], that.sanitize(tag));
             } else {
                 console.log('Could not rename ', mediafile.path);
                 return mediafile.path;
@@ -64,7 +64,6 @@ function Renamer(templateString) {
     that.handleAdd = function (mediafile) {
         var newFilepath = that.newFilepath(mediafile);
         if (newFilepath !== mediafile.path) {
-            console.error(newFilepath,'!==', mediafile.path);
             console.log('Renaming', mediafile.path, ' to ', newFilepath);
             fs.move(mediafile.path,
                 newFilepath,

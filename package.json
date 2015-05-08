@@ -5,9 +5,10 @@
   "main": "music_guy.js",
   "author": "Brendon Carroll",
   "dependencies": {
-    "chokidar": "*",
+    "chokidar": "^1.0.1",
     "express": "^4.12.3",
     "fs-extra": "^0.18.2",
+    "js2xmlparser": "^0.1.9",
     "mongodb": "*",
     "musicmetadata": "*",
     "tingodb": "^0.3.4"
