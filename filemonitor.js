@@ -17,8 +17,8 @@ function FileMonitor(db, dirpath) {
     that.mediafiles = that.db.collection("mediafiles");
     that.watcher = chokidar.watch(that.dirpath, {
         alwaysStat: true,
-        ignored: /\/_music_guy\/.*|(.*\/iTunes\/.*)/,
-        persistent: false,
+        ignored: /(\/_music_guy\/.*)|(\/iTunes\/.*)/,
+        persistent: true,
     });
 
     that.update = function(filepath, stats) {
@@ -62,7 +62,7 @@ function FileMonitor(db, dirpath) {
                 that.add(filepath, stats);
             }
             // In db and out of date
-            else if (stats.mtime > stats.mtime) {
+            else if (stats.mtime > doc.mtime) {
                 that.update(filepath, stats);
             }
         });
@@ -81,10 +81,15 @@ function FileMonitor(db, dirpath) {
         console.error(error);
     };
 
+    that.handleReady = function () {
+        console.log('File Monitor: finished initial scan');
+    };
+
     that.watcher
         .on('add', that.handleAdd)
         .on('change', that.handleChange)
         .on('unlink', that.handleUnlink)
+        .on('ready', that.handleReady)
         .on('error', that.handleError);
 
     return path;
