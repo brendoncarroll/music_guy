@@ -1,30 +1,38 @@
-<div id="search" class="container">
-    <form>
-      <input type ="text" class="form-control" ng-model="query" placeholder="Your search query here.">
-    </form>
-</div>
-
-<div id="list" class="container">
-  <span>Now showing results for: {{ query }}</span>
-  <div id="song-table">
-    <table class="table">
-        <tr>
-          <th>Artist</th>
-          <th>Album</th>
-          <th>Title</th>
-          <th>Length</th>
-        </tr>
-        <tr ng-repeat="song in songs" ng-dblclick="queueSong(song)">
-          <td>{{ song.artist }}</td>
-          <td>{{ song.album }}</td>
-          <td>{{ song.title }}</td>
-          <td>{{ song.length }}</td>
-        </tr>
-      </table>
+<div class="row">
+    <div id="search" class="container center-block">
+        <form>
+          <input type ="text" class="form-control" ng-model="query" placeholder="Your search query here.">
+        </form>
     </div>
 </div>
 
-<div id="player" class="container">
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div id="list" class="col-lg-8">
+      <span>Now showing results for: {{ query }}</span>
+      <div id="song-table">
+        <table class="table">
+            <tr>
+              <th>Artist</th>
+              <th>Album</th>
+              <th>Title</th>
+              <th>Length</th>
+            </tr>
+            <tr ng-repeat="song in songs" ng-dblclick="queueSong(song)">
+              <td>{{ song.artist }}</td>
+              <td>{{ song.album }}</td>
+              <td>{{ song.title }}</td>
+              <td>{{ song.length }}</td>
+            </tr>
+          </table>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div mg-queue ng-controller="QueueCtrl"></div>
+    </div>
+</div>
+
+<div id="player" class="row col-lg-12">
     <div class="row" ng-show="currentSong">
         <span>Now Playing {{currentSong.title}} by {{currentSong.artist}}</span>
     </div>

@@ -1,6 +1,6 @@
 var app = angular.module('app', [
     'ngRoute',
-    'Main'
+    'Main',
 ]);
 
 app.config(function($routeProvider) {
