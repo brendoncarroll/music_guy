@@ -12,6 +12,7 @@ var WebUI = require('./webui');
 var Db = require('./db.js').Db;
 var RestAPI = require('./restapi.js');
 var SubsonicAPI = require('./subsonic.js');
+var WebSocketAPI = require('./websocketapi.js');
 
 SUPPORTED_FILETYPES = {
     '.flac': true,
@@ -41,6 +42,7 @@ function MusicGuy() {
 
         that.restapi = RestAPI(db, that.webapp);
         that.subsonicapi = SubsonicAPI(db);
+        that.websocketapi = WebSocketAPI(that.server, db);
     });
 
     return that;

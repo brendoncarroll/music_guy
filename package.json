@@ -11,6 +11,7 @@
     "js2xmlparser": "^0.1.9",
     "mongodb": "*",
     "musicmetadata": "*",
-    "tingodb": "^0.3.4"
+    "tingodb": "^0.3.4",
+    "ws": "^0.7.1"
   }
 }

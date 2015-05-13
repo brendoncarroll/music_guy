@@ -1,4 +1,6 @@
 
+var fs = require('fs-extra');
+
 var express = require('express');
 var ObjectID = require('./db.js').ObjectID;
 
@@ -59,9 +61,11 @@ module.exports = function RestAPI(db, app) {
         });
     });
 
-    that.app.get('/play/:id', function (req, res) {
+    that.app.get('/stream/:id', function (req, res) {
         that.mediafiles.findOne({'_id': ObjectID(req.params.id)}, function (err, doc) {
-            res.sendFile(doc.path);
+            res.sendFile(doc.path, {lastModified: false}, function (err) {
+                res.end();
+            });
         });
     });
 

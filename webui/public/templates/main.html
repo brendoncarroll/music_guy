@@ -14,7 +14,7 @@
           <th>Title</th>
           <th>Length</th>
         </tr>
-        <tr ng-repeat="song in songs" ng-dblclick="changeSong(song)">
+        <tr ng-repeat="song in songs" ng-dblclick="queueSong(song)">
           <td>{{ song.artist }}</td>
           <td>{{ song.album }}</td>
           <td>{{ song.title }}</td>
@@ -30,7 +30,7 @@
     </div>
     <div class="btn-group btn-group">
         <button class="btn btn-default btn-lg"
-            ng-click="">
+            ng-click="backward()">
             <span class="glyphicon glyphicon-step-backward"></span>
         </button>
         <button class="btn btn-default btn-lg"
@@ -43,7 +43,8 @@
             ng-click="pause()">
             <span class="glyphicon glyphicon-pause"></span>
         </button>
-        <button class="btn btn-default btn-lg">
+        <button class="btn btn-default btn-lg"
+            ng-click="forward()">
             <span class="glyphicon glyphicon-step-forward"></span>
         </button>
     </div>
