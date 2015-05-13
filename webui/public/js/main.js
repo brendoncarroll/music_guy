@@ -63,19 +63,4 @@ main.controller('MainCtrl', function($scope, RestAPI, PlayerService) {
 
     $scope.queueSong = PlayerService.queueSong;
 
-    $scope.isPlaying = PlayerService.isPlaying;
-
-    $scope.pause = function(){
-        PlayerService.pause();
-    };
-
-    $scope.play = function() {
-        PlayerService.play();
-    };
-
-    $scope.forward = function() {
-        PlayerService.forward();
-    }
-
-    $scope.backward = PlayerService.backward;
 });

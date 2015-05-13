@@ -1,0 +1,25 @@
+<div id="player" class="row col-lg-12">
+    <div class="row" ng-show="currentSong">
+        <span>Now Playing {{currentSong.title}} by {{currentSong.artist}}</span>
+    </div>
+    <div class="btn-group btn-group">
+        <button class="btn btn-default btn-lg"
+            ng-click="backward()">
+            <span class="glyphicon glyphicon-step-backward"></span>
+        </button>
+        <button class="btn btn-default btn-lg"
+            ng-hide="isPlaying()"
+            ng-click="play()">
+            <span class="glyphicon glyphicon-play"></span>
+        </button>
+        <button class="btn btn-default btn-lg"
+            ng-hide="!isPlaying()"
+            ng-click="pause()">
+            <span class="glyphicon glyphicon-pause"></span>
+        </button>
+        <button class="btn btn-default btn-lg"
+            ng-click="forward()">
+            <span class="glyphicon glyphicon-step-forward"></span>
+        </button>
+    </div>
+</div>

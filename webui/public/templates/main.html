@@ -11,7 +11,7 @@
     <div id="list" class="col-lg-8">
       <span>Now showing results for: {{ query }}</span>
       <div id="song-table">
-        <table class="table">
+        <table class=" table table-condensed table-striped">
             <tr>
               <th>Artist</th>
               <th>Album</th>
@@ -32,28 +32,4 @@
     </div>
 </div>
 
-<div id="player" class="row col-lg-12">
-    <div class="row" ng-show="currentSong">
-        <span>Now Playing {{currentSong.title}} by {{currentSong.artist}}</span>
-    </div>
-    <div class="btn-group btn-group">
-        <button class="btn btn-default btn-lg"
-            ng-click="backward()">
-            <span class="glyphicon glyphicon-step-backward"></span>
-        </button>
-        <button class="btn btn-default btn-lg"
-            ng-hide="isPlaying()"
-            ng-click="play()">
-            <span class="glyphicon glyphicon-play"></span>
-        </button>
-        <button class="btn btn-default btn-lg"
-            ng-hide="!isPlaying()"
-            ng-click="pause()">
-            <span class="glyphicon glyphicon-pause"></span>
-        </button>
-        <button class="btn btn-default btn-lg"
-            ng-click="forward()">
-            <span class="glyphicon glyphicon-step-forward"></span>
-        </button>
-    </div>
-</div>
+<div mg-player ng-controller="PlayerCtrl" class="row"></div>
