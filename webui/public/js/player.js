@@ -9,6 +9,10 @@ Player.service('PlayerService', function (RestAPI, $rootScope) {
         return self.queue;
     };
 
+    this.currentSong = function () {
+        return self.queue[0];
+    };
+
     this.play = function () {
         if (self.player) {
             self.player.play();
@@ -34,6 +38,9 @@ Player.service('PlayerService', function (RestAPI, $rootScope) {
         self.queue = self.queue.slice(1);
         if (self.queue.length > 0) {
             self.changeSong(self.queue[0]._id);
+        } else {
+            self.player.stop();
+            delete self.player();
         }
     };
 
@@ -52,6 +59,7 @@ Player.service('PlayerService', function (RestAPI, $rootScope) {
         }
         self.player = new AV.Player(self.assetCache[id]);
         self.player.on('end', function () {
+            self.player.stop();
             self.forward();
             $rootScope.$apply();
         });
@@ -91,4 +99,6 @@ Player.controller('PlayerCtrl', function ($scope, PlayerService) {
     };
 
     $scope.backward = PlayerService.backward;
+
+    $scope.currentSong = PlayerService.currentSong();
 });
