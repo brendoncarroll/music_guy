@@ -6,5 +6,6 @@ module.exports = function config(filepath) {
         encoding: 'utf-8',
     });
     var that = JSON.parse(configString);
+    fs.statSync(that.musicFolder);
     return that;
 };
