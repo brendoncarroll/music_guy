@@ -38,7 +38,7 @@ function Db(callback) {
     } else {
         var dbFolder = path.join(CONFIG.musicFolder, '_music_guy');
         try {
-            fs.mkdirSync(dbFolder);
+            fs.mkdirsSync(dbFolder);
         } catch (err) {
             if (err.code !== 'EEXIST') {
                 throw err;
