@@ -37,13 +37,7 @@ function Db(callback) {
         });
     } else {
         var dbFolder = path.join(CONFIG.musicFolder, '_music_guy');
-        try {
-            fs.mkdirsSync(dbFolder);
-        } catch (err) {
-            if (err.code !== 'EEXIST') {
-                throw err;
-            }
-        }
+        fs.mkdirsSync(dbFolder);
         var db = new Engine.Db(dbFolder, {});
         var mediafiles = db.collection('mediafiles');
         setupMediafiles(mediafiles);
