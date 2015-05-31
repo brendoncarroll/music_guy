@@ -1,6 +1,0 @@
-{
-	"musicFolder": "/Path/to/your/music/folder",
-	"nameTemplate": "%albumartist%/%album%/%title%",
-	"enableRenamer": false,
-	"useMongoDB": false
-}
