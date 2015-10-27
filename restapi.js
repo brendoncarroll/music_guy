@@ -33,7 +33,7 @@ module.exports = function RestAPI(db, app) {
     that.app.get('/library/search/', function (req, res) {
         var query = req.query.q;
         function regex(string) {
-            return new RegExp('^' + string + '.*', 'i');
+            return new RegExp('.*' + string + '.*', 'i');
         }
         that.mediafiles.find({
             $or: [{title: regex(query)},
@@ -67,6 +67,14 @@ module.exports = function RestAPI(db, app) {
                 res.end();
             });
         });
+    });
+
+    that.app.get('/library/waveforms/:id', function (req, res) {
+        var list = [];
+        for(var i=0; i<1000; i++) {
+            list.push(Math.random());
+        }
+        res.send(list);
     });
 
     return that;
