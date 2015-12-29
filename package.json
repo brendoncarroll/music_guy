@@ -6,8 +6,10 @@
   "author": "Brendon Carroll",
   "dependencies": {
     "chokidar": "^1.0.1",
+    "expand-tilde": "^1.2.0",
     "express": "^4.12.3",
     "fs-extra": "^0.18.2",
+    "js-yaml": "^3.4.6",
     "js2xmlparser": "^0.1.9",
     "mongodb": "*",
     "musicmetadata": "*",

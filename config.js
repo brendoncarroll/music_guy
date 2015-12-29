@@ -1,11 +1,11 @@
 
 var fs = require('fs-extra');
+var yaml = require('js-yaml');
+var expandTilde = require('expand-tilde');
 
 module.exports = function config(filepath) {
-    var configString = fs.readFileSync(filepath, {
-        encoding: 'utf-8',
-    });
-    var that = JSON.parse(configString);
-    fs.statSync(that.musicFolder);
-    return that;
+    var doc = yaml.safeLoad(fs.readFileSync('config.yml'));
+    doc.musicFolder = expandTilde(doc.musicFolder);
+    fs.statSync(doc.musicFolder);
+    return doc;
 };
