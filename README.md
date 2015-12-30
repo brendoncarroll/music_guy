@@ -3,16 +3,8 @@ Music Guy is a music management and streaming application designed for a home me
 
 ## Installation
 1. Clone the repository
-2. Run `npm installl`
-3. Edit the `config.json` file.
-```
-{
-	"musicFolder": "/Path/to/Your/Music/",
-	"nameTemplate": "%albumartist%/%album%/%title%",
-	"enableRenamer": false,
-	"useMongoDB": false
-}
-```
+2. Run `npm install`
+3. Edit the `config.yml` file.  The default settings should be fine.
 Please be careful enabling the renamer, it will rename all the files in your music folder to match the naming scheme.
 4. Run `node music_guy.js` to start the application.  By default the api is on port 3000.
 
