@@ -26,39 +26,59 @@ module.exports = function RestAPI(db, app) {
                     }
                 });
             });
-            res.json({songs: docs});
+            res.json({
+                results:{
+                    titles: docs
+                }
+            });
         });
     });
 
     that.app.get('/library/search/', function (req, res) {
         var query = req.query.q;
+        var results = {titles:[]};
         function regex(string) {
             return new RegExp('.*' + string + '.*', 'i');
         }
-        that.mediafiles.find({
-            $or: [{title: regex(query)},
-                {artist: regex(query)},
-                {album: regex(query)}]
-        }, {
-            title: 1,
-            artist: 1,
-            album: 1,
-            genre: 1,
-        }).limit(20).toArray(function (err, docs) {
-            if (err) {
-                console.error(err);
-                return;
+        var count = 0;
+        function finish() {
+            if (count >= 2) {
+                res.json({results: results});
+                console.log(results);
             }
-            docs.forEach(function (song) {
-                Object.keys(song).forEach(function (key) {
-                    var value = song[key];
-                    if (value.constructor === Array) {
-                        song[key] = value.join(', ');
-                    }
-                });
+            count++;
+        }
+        function single_field(field) {
+            dbq = {};
+            dbq[field] = regex(query)
+            that.mediafiles.find(dbq, {
+                title: 1,
+                artist: 1,
+                album: 1,
+                genre: 1,
+            })
+            .limit(20)
+            .toArray(function (err, docs) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                //console.log(docs);
+                results[field + 's'] = docs;
+                docs.forEach(function (song) {
+                     Object.keys(song).forEach(function (key) {
+                         var value = song[key];
+                         if (value.constructor === Array) {
+                             song[key] = value.join(', ');
+                         }
+                     });
+                 });
+                finish();
             });
-            res.json({songs: docs});
-        });
+        }
+        single_field('title');
+        single_field('artist');
+        single_field('album');
     });
 
     that.app.get('/stream/:id', function (req, res) {

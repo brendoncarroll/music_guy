@@ -5,7 +5,7 @@ var http = require('http');
 var express = require('express');
 
 var config = require('./config.js');
-CONFIG = config('./config.json');
+CONFIG = config('./config.yml');
 
 var FileMonitor = require('./filemonitor.js');
 var Renamer = require('./renamer.js');
