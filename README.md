@@ -14,4 +14,9 @@ Please be careful enabling the renamer, it will rename all the files in your mus
 - **Supports flac and mp3.**
 - **Listen to music through the web interface**
 
-
+## Planned Features
+- **Queue** Queue songs up to play next.  Maybe gapless playback
+- **Player Synchronization** All players will be attached to a channel and its state (which includes a queue).  Players will attempt to stay in step with channel by pausing, seeking, and changing songs at the same time.  DLNA devices could maybe be attached to a channel.
+- **Metadata Repair** Use acoustIDs to look up metadata with the MusicBrainz database.  Ideally this would be totally behind the scenes.
+- **Third Party Searching** When a song can't be found locally, search YouTube and Soundcloud.
+- **Smart Playlists** The user creates rules and playlists are lazily created when needed.
