@@ -12,5 +12,6 @@ Please be careful enabling the renamer, it will rename all the files in your mus
 - **Auto organization by tags** Music is organized automatically using the `nameTemplate` string in config.json.  If a file is missing a needed tag it will not be renamed.
 - **Automatically add music** The music folder is watched for new files.
 - **Supports flac and mp3.**
-- **Use mongodb or tingodb** (an embedded database for NodeJS)
 - **Listen to music through the web interface**
+
+
