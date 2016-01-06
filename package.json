@@ -18,6 +18,7 @@
     "mongodb": "*",
     "mp3": "^0.1.0",
     "musicmetadata": "*",
+    "natural": "^0.2.1",
     "nedb": "^1.5.1",
     "ogg.js": "^0.1.0",
     "react": "^0.14.5",

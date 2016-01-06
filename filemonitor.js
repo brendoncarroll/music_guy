@@ -4,9 +4,9 @@ var path = require('path');
 var mm = require('musicmetadata');
 var fs = require('fs');
 
-function FileMonitor(db, dirpath) {
+function FileMonitor(library, dirpath) {
     that = {
-        db: db,
+        lib: library,
         dirpath: dirpath,
     };
     if (!fs.statSync(dirpath).isDirectory()) {
@@ -14,10 +14,9 @@ function FileMonitor(db, dirpath) {
     }
     console.log('Now Monitoring ', dirpath);
 
-    that.mediafiles = that.db.collection("mediafiles");
     that.watcher = chokidar.watch(that.dirpath, {
         alwaysStat: true,
-        ignored: /(\/_music_guy\/.*)|(\/iTunes\/.*)/,
+        ignored: [MGFOLDER+'*', 'iTunes*'],
         persistent: true,
     });
 
@@ -26,11 +25,7 @@ function FileMonitor(db, dirpath) {
             delete mediafile.picture;
             mediafile.mtime = stats.mtime;
             mediafile.path = filepath;
-            that.mediafiles.update({
-                path: filepath
-            }, mediafile, function (err) {
-                if (err) throw err;
-            });
+            that.lib.addMediafile(mediafile);
             process.emit('mediaFileUpdate', mediafile);
         });
     };
@@ -41,10 +36,7 @@ function FileMonitor(db, dirpath) {
             delete mediafile.picture;
             mediafile.mtime = stats.mtime;
             mediafile.path = filepath;
-            that.mediafiles.insert(mediafile, function (err) {
-                if (err) throw err;
-                process.emit('mediaFileAdd', mediafile);
-            });
+            that.lib.addMediafile(mediafile);
         });
     };
 
@@ -53,10 +45,7 @@ function FileMonitor(db, dirpath) {
         if (!SUPPORTED_FILETYPES[path.extname(filepath)]) {
             return;
         }
-        that.mediafiles.findOne({path: filepath}, function (err, doc) {
-            if (err) {
-                throw err;
-            }
+        that.lib.findAtPath(filepath, function (doc) {
             // Not in db
             if (doc === null) {
                 that.add(filepath, stats);
@@ -74,7 +63,7 @@ function FileMonitor(db, dirpath) {
 
     that.handleUnlink = function (filepath, stats) {
         console.log('Removing ', filepath);
-        that.mediafiles.remove({path: filepath});
+        that.lib.removeMediafileAtPath(filepath);
     };
 
     that.handleError = function (error) {
@@ -92,7 +81,7 @@ function FileMonitor(db, dirpath) {
         .on('ready', that.handleReady)
         .on('error', that.handleError);
 
-    return path;
+    return that;
 }
 
 module.exports = FileMonitor;

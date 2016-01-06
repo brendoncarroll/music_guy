@@ -7,6 +7,3 @@ musicFolder: "~/Music/"
 enableRenamer: false
 # How the files should be named within musicFolder
 nameTemplate: "%albumartist%/%album%/%title%"
-
-# If true, MongoDB will be used instead of tingoDB
-useMongoDB: false

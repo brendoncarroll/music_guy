@@ -1,54 +1,54 @@
 #!/usr/bin/env node
+"use strict"
 
 var http = require('http');
+var fs = require('fs-extra');
 
 var express = require('express');
 
 var config = require('./config.js');
-CONFIG = config('./config.yml');
+global.CONFIG = config('./config.yml');
 
 var FileMonitor = require('./filemonitor.js');
 var Renamer = require('./renamer.js');
 var WebUI = require('./webui');
-var Db = require('./db.js').Db;
+var Library = require('./library.js');
 var RestAPI = require('./restapi.js');
 var SubsonicAPI = require('./subsonic.js');
 var WebSocketAPI = require('./websocketapi.js');
 
-SUPPORTED_FILETYPES = {
+global.SUPPORTED_FILETYPES = {
     '.flac': true,
     '.mp3': true,
 };
+global.MGFOLDER = CONFIG.musicFolder + '.mg/';
+global.PORT = process.env.PORT | 3000;
+fs.mkdirsSync(MGFOLDER);
 
 function MusicGuy() {
-    var that = {
-        port: 3000
-    };
+    var that = {};
     console.log('Starting Music Guy...');
 
     that.webapp = express();
     that.server = http.createServer(that.webapp);
     that.webui = WebUI(that.webapp);
-    that.server.listen(that.port);
-    console.log('Listening on port', that.port,'...');
+    that.server.listen(PORT);
+    console.log('Listening on port', PORT,'...');
 
     if (CONFIG.enableRenamer) {
         that.renamer = Renamer(CONFIG.nameTemplate);
     }
 
-    Db(function (db) {
-        that.db = db;
-        that.mediafiles = db.collection('mediafiles');
-        that.fm = FileMonitor(that.db, CONFIG.musicFolder);
+    that.lib = new Library();
+    that.fm = FileMonitor(that.lib, CONFIG.musicFolder);
 
-        that.restapi = RestAPI(db, that.webapp);
-        that.subsonicapi = SubsonicAPI(db);
-        that.websocketapi = WebSocketAPI(that.server, db);
-    });
+    that.restapi = RestAPI(that.lib, that.webapp);
+    //that.subsonicapi = SubsonicAPI(db);
+    //that.websocketapi = WebSocketAPI(that.server, that.lib);
 
     return that;
 }
 
 module.exports = MusicGuy;
 
-mn = MusicGuy();
+var mg = MusicGuy();
