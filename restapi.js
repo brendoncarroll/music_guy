@@ -15,6 +15,13 @@ module.exports = function RestAPI(lib, app) {
       })
     });
 
+    that.app.get('/library/artists/:name', function (req, res) {
+        var name = req.params.name;
+        that.lib.getArtist(name, function (artist) {
+            res.json(artist);
+        });
+    });
+
     that.app.get('/library/search/', function (req, res) {
         var query = req.query.q;
         that.lib.search(query, function (results) {

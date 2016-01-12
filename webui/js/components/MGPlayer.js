@@ -1,5 +1,8 @@
 var React = require('react');
 
+var Toolbar = require('material-ui/lib/toolbar/toolbar');
+var ToolbarGroup = require('material-ui/lib/toolbar/toolbar-group');
+
 var PlayerStore = require('../stores/PlayerStore.js');
 var PlayerActions = require('../actions/PlayerActions.js');
 
@@ -71,7 +74,6 @@ var MGSlider = React.createClass({
 
         var posX = this.props.currentTime / this.props.duration * SLIDER_WIDTH;
         if (!posX) posX = 0;
-        console.log(posX);
 
         return <svg onClick={this.handleClick} height="4" width={SLIDER_WIDTH}>
             <line x1={0} x2={SLIDER_WIDTH} y1={0} y2={0}
@@ -97,12 +99,21 @@ var MGPlayer = React.createClass({
         PlayerStore.remove('change', this._onChange);
     },
     render: function () {
-        return <div>
+      var style = {
+        position: "fixed",
+        bottom: "0",
+        width: "100%",
+      }
+      return <div style={style}>
+        <Toolbar>
+        <ToolbarGroup>
           Now Playing: <MGSongInline data={this.state.nowPlaying}/>
           <MGPlayerButtons isPlaying={this.state.isPlaying}/>
           <MGSlider buffered={this.state.buffered} currentTime={this.state.currentTime} duration={this.state.duration}/>
           <MGTime ms={this.state.currentTime}/> / <MGTime ms={this.state.duration}/>
-        </div>
+        </ToolbarGroup>
+        </Toolbar>
+      </div>
     }
 });
 

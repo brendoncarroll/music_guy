@@ -1,19 +1,16 @@
 var React = require('react');
 var MGAPI = require('../actions/MGAPI');
 
+var TextField = require('material-ui/lib/text-field');
+
 var MGSearchBar = React.createClass({
-  getInitialState: function () {
-    return {
-      value: ""
-    };
-  },
   onChange: function (event) {
-    this.state.value = event.target.value;
-    MGAPI.search(this.state.value);
+    MGAPI.search(event.target.value);
   },
   render: function () {
     return <div>
-      <input type="text" onChange={this.onChange}/>
+      <TextField fullWidth={true} hintText="Search"
+      onChange={this.onChange}/>
     </div>
   }
 });
